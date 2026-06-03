@@ -155,19 +155,18 @@ FitConfig_Phase3 GetConfig_Phase3(TString pt_bin) {
     return cfg;
 }
 
-// ================================================================
-// BACKGROUND: polinomio di 4° grado
-// ================================================================
+
+// BACKGROUND: pol. 4 grade
+
 Double_t background_func(Double_t *x, Double_t *p) {
     Double_t m = x[0];
     return (1.0 + p[0]*m + p[1]*m*m + p[2]*m*m*m + p[3]*m*m*m*m);
 }
 
-// ================================================================
-// W SIGNAL: Crystal Ball con coda sinistra (dummy in fase 3)
+// W SIGNAL: Crystal Ball left tail (dummy in phase 3)
 //   p[0]=fgauss_W, p[1]=mean_W, p[2]=sigma1_W, p[3]=sigma2_W,
 //   p[4]=lambda_W, p[5]=trans_W
-// ================================================================
+
 Double_t W_signal_func(Double_t *x, Double_t *p) {
     Double_t G_trans = p[0] * TMath::Gaus(p[5], p[1], p[2], kFALSE) +
                        (1.0 - p[0]) * TMath::Gaus(p[5], p[1], p[3], kFALSE);
@@ -176,9 +175,8 @@ Double_t W_signal_func(Double_t *x, Double_t *p) {
     else              return G_trans * TMath::Exp(p[4] * (x[0] - p[5]));
 }
 
-// ================================================================
-// Z SIGNAL: Crystal Ball con coda sinistra
-// ================================================================
+// Z SIGNAL: Crystal Ball left tail
+
 Double_t Z_signal_func(Double_t *x, Double_t *p) {
     Double_t G_trans = p[0] * TMath::Gaus(p[5], p[1], p[2], kFALSE) +
                        (1.0 - p[0]) * TMath::Gaus(p[5], p[1], p[3], kFALSE);
@@ -187,15 +185,14 @@ Double_t Z_signal_func(Double_t *x, Double_t *p) {
     else              return G_trans * TMath::Exp(p[4] * (x[0] - p[5]));
 }
 
-// ================================================================
-// FUNZIONE TOTALE: 19 parametri
-//   p[0]       = A
-//   p[1]       = f
-//   p[2]       = g
-//   p[3..8]    = W signal  (fgauss_W, mean_W, sigma1_W, sigma2_W, lambda_W, trans_W)
-//   p[9..14]   = Z signal  (fgauss_Z, mean_Z, sigma1_Z, sigma2_Z, lambda_Z, trans_Z)
-//   p[15..18]  = bkg pol4  (p1, p2, p3, p4)
-// ================================================================
+// TOT FUNCTION: 19 parameters
+//   p[0]       = A            (amplitude )
+//   p[1]       = f            (sig fraction, fisso = 0 in fase 1)
+//   p[2]       = g            (fraction W vs Z,  fisso = 0 in fase 1)
+//   p[3..8]    = W signal     (fgauss_W, mean_W, sigma1_W, sigma2_W, lambda_W, trans_W)
+//   p[9..14]   = Z signal     (fgauss_Z, mean_Z, sigma1_Z, sigma2_Z, lambda_Z, trans_Z)
+//   p[15..18]  = background   (p1, p2, p3, p4)
+
 Double_t total_func(Double_t *x, Double_t *p) {
     Double_t W_pars[6]   = {p[3],  p[4],  p[5],  p[6],  p[7],  p[8]};
     Double_t Z_pars[6]   = {p[9],  p[10], p[11], p[12], p[13], p[14]};
@@ -227,11 +224,7 @@ void fit4binsfase3B(
     Double_t fit_min    = 75.0,
     Double_t fit_max    = 96.0
 ) {
-    cout << "\n========================================" << endl;
-    cout << "PHASE 3: Z SIGNAL FIT (Crystal Ball)" << endl;
-    cout << "pt_bin: " << pt_bin << endl;
-    cout << "========================================\n" << endl;
-
+   
     gROOT->SetBatch(kTRUE);
     gStyle->SetOptStat(0);
     gStyle->SetOptTitle(0);
@@ -309,16 +302,16 @@ void fit4binsfase3B(
 
     fit_phase3->SetParameter(0, cfg.A_init);
     fit_phase3->SetParLimits(0, cfg.A_min, cfg.A_max);
-    fit_phase3->FixParameter(1, 1.0);   // f=1: solo segnale
-    fit_phase3->FixParameter(2, 0.0);   // g=0: solo Z
+    fit_phase3->FixParameter(1, 1.0);   // f=1: only signal
+    fit_phase3->FixParameter(2, 0.0);   // g=0: only Z
 
-    // W dummy (fissi, non usati con g=0) -- Crystal Ball
+    // W dummy (fissi, non usati con g=0)
     fit_phase3->FixParameter(3, 0.5);
     fit_phase3->FixParameter(4, 80.0);
     fit_phase3->FixParameter(5, 2.0);
     fit_phase3->FixParameter(6, 2.0);
-    fit_phase3->FixParameter(7, 0.4);   // lambda_W dummy
-    fit_phase3->FixParameter(8, 74.0);  // trans_W  dummy
+    fit_phase3->FixParameter(7, 0.4);   
+    fit_phase3->FixParameter(8, 74.0);  
 
     // Z (da fittare)
     fit_phase3->SetParameter(9,  cfg.fgauss_Z_init);
