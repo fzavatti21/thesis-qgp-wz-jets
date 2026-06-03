@@ -33,12 +33,9 @@ void clearcreating(
     TString output_name = "/eos/home-f/fzavatti/eventi6_R0.2_bkgCONsub400pclesSOFTz02_unq/WZ_histograms4bins.root"
 ) {
     
-    cout << "\n========================================" << endl;
     cout << "CREATING W and Z GROOMED MASS HISTOGRAMS" << endl;
-    cout << "========================================" << endl;
     cout << "Reading file list: " << fileList << endl;
     cout << "Output file: " << output_name << endl;
-    cout << "========================================\n" << endl;
     
     gROOT->SetBatch(kTRUE);
     gSystem->Exec("mkdir -p /eos/home-f/fzavatti/eventi6_R0.2_bkgCONsub400pclesSOFTz02_unq");
