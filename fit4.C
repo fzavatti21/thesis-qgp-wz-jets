@@ -161,7 +161,7 @@ TString BuildPhasePath(TString base_tag, int phase_num, TString pt_bin) {
     return Form(EOS_BASE "/figuresB/%s/phase%d_results.root", tag.Data(), phase_num);
 }
 
-void fit4binsfase4B(
+void fit4(
     TString input_file  = EOS_BASE "/WZ_histograms4bins.root",
     TString phase1_file = "auto",
     TString phase2_file = "auto",
