@@ -187,13 +187,13 @@ Double_t bkg_p4[4]        = {9.0035e-09,   4.46927e-08,  1.68456e-08,  0.0};
             f_fit->FixParameter(18, bkg_p4[iTest]);
 
             f_fit->FixParameter(1, f_init[iTest]);
-             h->Fit(f_fit, "RQWLN");
+             h->Fit(f_fit, "RQLN");
 
             // Phase 2: release parameters
             f_fit->ReleaseParameter(1);  f_fit->SetParLimits(1, 0.0, 1.0);
             f_fit->ReleaseParameter(4);  f_fit->SetParLimits(4, true_mean_W[iTest]-3, true_mean_W[iTest]+3);
             f_fit->ReleaseParameter(10); f_fit->SetParLimits(10, true_mean_Z[iTest]-3, true_mean_Z[iTest]+3);
-             h->Fit(f_fit, "RQWLN");
+             h->Fit(f_fit, "RQLN");
 
             // Phase 3: release sigma
             if (iTest == 0) {
@@ -207,12 +207,12 @@ Double_t bkg_p4[4]        = {9.0035e-09,   4.46927e-08,  1.68456e-08,  0.0};
                 f_fit->SetParLimits(5,0.5,6.0); f_fit->SetParLimits(6,0.5,6.0);
                 f_fit->SetParLimits(11,0.5,6); f_fit->SetParLimits(12,0.5,6);
             }
-             h->Fit(f_fit, "LWQN");
+             h->Fit(f_fit, "LQN");
 
             // final fit for this toy
             TFitResultPtr fitResult = h->Fit(f_fit, "SLWQN"); 
             if (fitResult->Status() != 0) {
-                h->Fit(f_fit, "SLEWQN");
+                h->Fit(f_fit, "SLEQN");
             }
 
 
