@@ -8,7 +8,7 @@ void mkDir(TString dir){
     gSystem->Exec(mkDIR);
 }
 
-/*void CMS_latex(){
+void CMS_latex(){
     TLatex* cmsColl = new TLatex();
     cmsColl->SetTextSize(0.04);
     cmsColl->SetTextFont(61);
@@ -39,7 +39,7 @@ void mkDir(TString dir){
     //cmsColl->DrawLatex(0.20-0.005, 0.942, "");
     //cmsPrel->DrawLatex(0.26-0.005, 0.942, extraText);
     lumiText->DrawLatex(0.97-0.005, 0.942, lumi);
-}*/
+}
 
 void DrawLatex(Float_t x, Float_t y, Int_t color, const char* text, Float_t textSize){
     TLatex* latex = new TLatex(x, y, text);
