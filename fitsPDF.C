@@ -12,9 +12,9 @@
 // nEventsList must be set to the number of events observed in
 // each pT bin after the N2 < 0.18 cut.
 //
-// pT bins: currently 3 (pt150_250, pt250_350, pt350_500).
+// pT bins: currently 4 (pt150_250, pt250_350, pt350_500, pt500_700).
 // To add a new bin: add one element to each array and
-// extend the loop to iTest < 4 (or however many bins you have).
+// extend the loop to iTest < 5 (or however many bins you have).
 //
 // Usage:
 //   root -l fitsPDF.C
