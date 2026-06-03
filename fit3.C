@@ -216,7 +216,7 @@ void CMS_latex() {
     lumi->DrawLatex(0.90, 0.92, "Pythia 8");
 }
 
-void fit4binsfase3B(
+void fit3(
     TString input_file  = EOS_BASE "/WZ_histograms4bins.root",
     TString phase1_file = "auto",
     TString output_tag  = "WZfit_phase3",
