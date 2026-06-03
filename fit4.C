@@ -255,7 +255,7 @@ void fit4(
     FitConfig_Phase4 cfg = GetConfig_Phase4(pt_bin);
     Double_t g_param;
     if (cfg.g_fixed < 0) {
-        g_param = (A_W + A_Z > 0) ? A_W / (A_W + A_Z) : 0.78;
+      g_param = A_W / (A_W + A_Z);
         cout << "\ng computed from A_W/(A_W+A_Z) = " << g_param << endl;
     } else {
         g_param = cfg.g_fixed;
