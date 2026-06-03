@@ -1,6 +1,6 @@
 # Studies of Jet Quenching using Boosted W and Z Bosons Decaying Hadronically in Heavy-Ion Collisions
 
-Master's Thesis — Francesca Zavatti  
+Master's Thesis, Francesca Zavatti  
 Sapienza Università di Roma, 2024/2025
 
 ---
@@ -11,13 +11,13 @@ This repository contains the simulation and analysis code used for my Master's t
 
 The code is organised as follows:
 
-- `WZgen.cc` — main simulation: generates pp events with Pythia8, embeds thermal background (OO or PbPb), applies a phenomenological quenching model, and computes jet substructure observables. Output: ROOT files with one TTree per run.
-- `creating4binsgroomed.C` — reads the ROOT files produced by WZgen.cc and fills 2D histograms of SoftDrop groomed mass vs N2, split by pT bin and event type (W, Z, QCD). Output: `WZ_histograms4bins.root`.
-- `fit1.C` — Phase 1 fit: fits the QCD background with a 4th-degree polynomial (signal fixed to zero).
-- `fit2.C` — Phase 2 fit: fits the W mass peak with a Crystal Ball function (background fixed from Phase 1).
-- `fit3.C` — Phase 3 fit: fits the Z mass peak with a Crystal Ball function (background fixed from Phase 1).
-- `fit4.C` — Phase 4 fit: full W+Z+background fit with all shape parameters fixed from Phases 1-3. Extracts the reconstructed mass peaks as a function of pT bin.
-- `fitsPDF.C` — Toy MC study: generates pseudo-experiments from the fitted function and refits them to estimate the statistical uncertainty on the mass peaks.
+- `WZgen.cc`, main simulation: generates pp events with Pythia8, embeds thermal background (OO or PbPb), applies a phenomenological quenching model, and computes jet substructure observables. Output: ROOT files with one TTree per run.
+- `creating.C`, reads the ROOT files produced by WZgen.cc and fills 2D histograms of SoftDrop groomed mass vs N2, split by pT bin and event type (W, Z, QCD). Output: `WZ_histograms4bins.root`.
+- `fit1.C`, Phase 1 fit: fits the QCD background with a 4th-degree polynomial (signal fixed to zero).
+- `fit2.C`, Phase 2 fit: fits the W mass peak with a Crystal Ball function (background fixed from Phase 1).
+- `fit3.C`, Phase 3 fit: fits the Z mass peak with a Crystal Ball function (background fixed from Phase 1).
+- `fit4.C`, Phase 4 fit: full W+Z+background fit with all shape parameters fixed from Phases 1-3. Extracts the reconstructed mass peaks as a function of pT bin.
+- `fitsPDF.C`, Toy MC study: generates pseudo-experiments from the fitted function and refits them to estimate the statistical uncertainty on the mass peaks.
 
 ---
 
@@ -50,11 +50,11 @@ For OO: L_medium = TMath::Power(16, 1./3.), quenching_normal = 0.03, qhat = 1.0 
 For PbPb: replace 16 with 208, quenching_normal = 0.10, qhat = 4.0 GeV²/fm.
 Three quenching scenarios are available inside the particle loop — uncomment the desired one (search for `SCENARIO` in the file).
 
-### creating4binsgroomed.C
+### creating.C
 
 Edit the default arguments at the top of the file (input file list and output path), then run:
 ```bash
-root -l creating4binsgroomed.C
+root -l creating.C
 ```
 
 ### fit1.C — fit4.C
