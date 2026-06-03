@@ -95,19 +95,17 @@ FitConfig_Phase4 GetConfig_Phase4(TString pt_bin) {
     return cfg;
 }
 
-// ================================================================
-// BACKGROUND: polinomio di 4° grado
-// ================================================================
+// BACKGROUND: polinomio 4 grade
+
 Double_t background_func(Double_t *x, Double_t *p) {
     Double_t m = x[0];
     return (1.0 + p[0]*m + p[1]*m*m + p[2]*m*m*m + p[3]*m*m*m*m);
 }
 
-// ================================================================
-// W SIGNAL: Crystal Ball con coda sinistra
+// W SIGNAL: Crystal Ball left tail
 //   p[0]=fgauss_W, p[1]=mean_W, p[2]=sigma1_W, p[3]=sigma2_W,
 //   p[4]=lambda_W, p[5]=trans_W
-// ================================================================
+
 Double_t W_signal_func(Double_t *x, Double_t *p) {
     Double_t G_trans = p[0] * TMath::Gaus(p[5], p[1], p[2], kFALSE) +
                        (1.0 - p[0]) * TMath::Gaus(p[5], p[1], p[3], kFALSE);
@@ -116,9 +114,8 @@ Double_t W_signal_func(Double_t *x, Double_t *p) {
     else              return G_trans * TMath::Exp(p[4] * (x[0] - p[5]));
 }
 
-// ================================================================
-// Z SIGNAL: Crystal Ball con coda sinistra
-// ================================================================
+// Z SIGNAL: Crystal Ball left tail
+
 Double_t Z_signal_func(Double_t *x, Double_t *p) {
     Double_t G_trans = p[0] * TMath::Gaus(p[5], p[1], p[2], kFALSE) +
                        (1.0 - p[0]) * TMath::Gaus(p[5], p[1], p[3], kFALSE);
@@ -127,15 +124,14 @@ Double_t Z_signal_func(Double_t *x, Double_t *p) {
     else              return G_trans * TMath::Exp(p[4] * (x[0] - p[5]));
 }
 
-// ================================================================
-// FUNZIONE TOTALE: 19 parametri
-//   p[0]       = A
-//   p[1]       = f
-//   p[2]       = g
-//   p[3..8]    = W signal  (fgauss_W, mean_W, sigma1_W, sigma2_W, lambda_W, trans_W)
-//   p[9..14]   = Z signal  (fgauss_Z, mean_Z, sigma1_Z, sigma2_Z, lambda_Z, trans_Z)
-//   p[15..18]  = bkg pol4  (p1, p2, p3, p4)
-// ================================================================
+// TOT FUNCTION: 19 parameters
+//   p[0]       = A            (amplitude )
+//   p[1]       = f            (sig fraction, fisso = 0 in fase 1)
+//   p[2]       = g            (fraction W vs Z,  fisso = 0 in fase 1)
+//   p[3..8]    = W signal     (fgauss_W, mean_W, sigma1_W, sigma2_W, lambda_W, trans_W)
+//   p[9..14]   = Z signal     (fgauss_Z, mean_Z, sigma1_Z, sigma2_Z, lambda_Z, trans_Z)
+//   p[15..18]  = background   (p1, p2, p3, p4)
+
 Double_t total_func(Double_t *x, Double_t *p) {
     Double_t W_pars[6]   = {p[3],  p[4],  p[5],  p[6],  p[7],  p[8]};
     Double_t Z_pars[6]   = {p[9],  p[10], p[11], p[12], p[13], p[14]};
@@ -194,7 +190,7 @@ void fit4binsfase4B(
     cout << "Reading phase 2 from: "<< phase2_file << endl;
     cout << "Reading phase 3 from: " << phase3_file << endl;
 
-    // ---- Fase 1: parametri pol4 background ----
+    //  Fase 1: parameters pol4 background 
     TFile* f1 = TFile::Open(phase1_file);
     if (!f1 || f1->IsZombie()) { cout << "ERROR: phase 1 file not found!" << endl; return; }
     TH1F* h1 = (TH1F*)f1->Get("results");
@@ -208,7 +204,7 @@ void fit4binsfase4B(
          << "  p3=" << p3_bkg << "  p4=" << p4_bkg << endl;
     f1->Close();
 
-    // ---- Fase 2: parametri segnale W (Crystal Ball) ----
+    //  Phase 2: parameters signal W 
     // bin1=A, bin2=f_signal, bin3=fgauss_W, bin4=Mean_W, bin5=Sigma1_W,
     // bin6=Sigma2_W, bin7=Lambda_W, bin8=Trans_W
     TFile* f2 = TFile::Open(phase2_file);
@@ -230,7 +226,7 @@ void fit4binsfase4B(
          << "  lambda=" << lambda_W << "  trans=" << trans_W << endl;
     f2->Close();
 
-    // ---- Fase 3: parametri segnale Z ----
+    //  Phase 3: parameters signal Z 
     // bin1=A, bin2=f_signal, bin3=fgauss_Z, bin4=Mean_Z, bin5=Sigma1_Z,
     // bin6=Sigma2_Z, bin7=Lambda_Z, bin8=Trans_Z
     TFile* f3 = TFile::Open(phase3_file);
@@ -250,7 +246,7 @@ void fit4binsfase4B(
          << "  mean=" << mean_Z << " +/- " << err_mean_Z << endl;
     f3->Close();
 
-    // Media delle masse W e Z con propagazione errore
+    // Mean W and Z masses
     Double_t mean_avg     = 0.5 * (mean_W + mean_Z);
     Double_t err_mean_avg = 0.5 * TMath::Sqrt(err_mean_W*err_mean_W + err_mean_Z*err_mean_Z);
     cout << "\nAverage of W and Z masses:" << endl;
@@ -266,7 +262,7 @@ void fit4binsfase4B(
         cout << "\ng fixed: " << g_param << endl;
     }
 
-    // ---- Leggi istogramma totale ----
+    
     TFile* file_input = TFile::Open(input_file);
     if (!file_input || file_input->IsZombie()) {
         cout << "ERROR: " << input_file << endl; return;
@@ -287,7 +283,7 @@ void fit4binsfase4B(
     Double_t binwidth = hist_total->GetBinWidth(1);
     hist_total->SetYTitle(Form("Events / %.1f GeV", binwidth));
 
-    // ---- Funzione di fit ----
+    // fit function
     TF1* fit_phase4 = new TF1("fit_phase4", total_func, fit_min, fit_max, 19);
     fit_phase4->SetParName(0,  "A");
     fit_phase4->SetParName(1,  "f");
@@ -309,13 +305,13 @@ void fit4binsfase4B(
     fit_phase4->SetParName(17, "p3_bkg");
     fit_phase4->SetParName(18, "p4_bkg");
 
-    // Solo A e f sono liberi
+    // Only A e f free
     fit_phase4->SetParameter(0, cfg.A_init);
     fit_phase4->SetParameter(1, cfg.f_init);
     fit_phase4->SetParLimits(0, cfg.A_min, cfg.A_max);
     fit_phase4->SetParLimits(1, cfg.f_min, cfg.f_max);
 
-    // Tutto il resto fisso dalle fasi precedenti
+    //everything else fixed by previous phases
     fit_phase4->FixParameter(2,  g_param);
     fit_phase4->FixParameter(3,  fgauss_W);
     fit_phase4->FixParameter(4,  mean_W);
@@ -373,7 +369,7 @@ void fit4binsfase4B(
     cout << "mean_avg= " << mean_avg << " +/- " << err_mean_avg << " (simple average)"  << endl;
     cout << "========================================\n" << endl;
 
-    // Componenti separate per il plot
+    // plot separated components
     TF1* W_component = new TF1("W_component",
         [A_final, f_final, g_param, fgauss_W, mean_W, sigma1_W, sigma2_W, lambda_W, trans_W]
         (Double_t *x, Double_t*) {
