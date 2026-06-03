@@ -18,7 +18,7 @@ The code is organised as follows:
 - `fit3.C`, Phase 3 fit: fits the Z mass peak with a Crystal Ball function (background fixed from Phase 1).
 - `fit4.C`, Phase 4 fit: full W+Z+background fit with all shape parameters fixed from Phases 1-3. Extracts the reconstructed mass peaks as a function of pT bin.
 - `fitsPDF.C`, Toy MC study: generates pseudo-experiments from the fitted function and refits them to estimate the statistical uncertainty on the mass peaks.
-- `myLib.cc` / `myLib.h` — Custom plotting and utility library used for generating final physics plots.
+- `myLib.cc` / `myLib.h`, Custom plotting and utility library used for generating final physics plots.
 
 ---
 
@@ -57,7 +57,7 @@ Three quenching scenarios are available inside the particle loop — uncomment t
 Before running the analysis and plotting macros, compile the custom shared utility library:
 ```bash
 g++ -shared -fPIC $(root-config --cflags --libs) myLib.cc -o libMyLib.so
-```s
+```
 
 ### creating.C
 
