@@ -37,7 +37,7 @@ using namespace std;
 // NOTE: change EOS_BASE to match your output directory
 #define EOS_BASE "/eos/home-f/fzavatti/eventi6_R0.2_bkgCONsub400pclesSOFTz02_tot"
 
-// ── Fit configuration per pT bin ─────────────────────────────────────────────
+//  Fit configuration per pT bin 
 // Each pT bin has its own initial values and parameter limits for the fit.
 // To add a new pT bin: add a new else-if block in GetConfig_Phase1()
 // with the corresponding initial values and limits, and make sure the
@@ -153,20 +153,18 @@ FitConfig_Phase1 GetConfig_Phase1(TString pt_bin) {
     return cfg;
 }
 
-// ================================================================
-// BACKGROUND: polinomio di 4° grado
+// BACKGROUND: pol. 4 grade
 //   bkg(x) = (1 + p[0]*x + p[1]*x^2 + p[2]*x^3 + p[3]*x^4)
-// ================================================================
+
 Double_t background_func(Double_t *x, Double_t *p) {
     Double_t m = x[0];
     return (1.0 + p[0]*m + p[1]*m*m + p[2]*m*m*m + p[3]*m*m*m*m);
 }
 
-// ================================================================
-// W SIGNAL: Crystal Ball con coda sinistra (come Z)
+// W SIGNAL: Crystal Ball con left tail 
 //   p[0]=fgauss_W, p[1]=mean_W, p[2]=sigma1_W, p[3]=sigma2_W,
 //   p[4]=lambda_W, p[5]=trans_W
-// ================================================================
+
 Double_t W_signal_func(Double_t *x, Double_t *p) {
     Double_t G_trans = p[0] * TMath::Gaus(p[5], p[1], p[2], kFALSE) +
                        (1.0 - p[0]) * TMath::Gaus(p[5], p[1], p[3], kFALSE);
@@ -175,11 +173,10 @@ Double_t W_signal_func(Double_t *x, Double_t *p) {
     else              return G_trans * TMath::Exp(p[4] * (x[0] - p[5]));
 }
 
-// ================================================================
-// Z SIGNAL: Crystal Ball con coda sinistra
+// Z SIGNAL: Crystal Ball left tail
 //   p[0]=fgauss_Z, p[1]=mean_Z, p[2]=sigma1_Z, p[3]=sigma2_Z,
 //   p[4]=lambda_Z, p[5]=trans_Z
-// ================================================================
+
 Double_t Z_signal_func(Double_t *x, Double_t *p) {
     Double_t G_trans = p[0] * TMath::Gaus(p[5], p[1], p[2], kFALSE) +
                        (1.0 - p[0]) * TMath::Gaus(p[5], p[1], p[3], kFALSE);
@@ -188,15 +185,15 @@ Double_t Z_signal_func(Double_t *x, Double_t *p) {
     else              return G_trans * TMath::Exp(p[4] * (x[0] - p[5]));
 }
 
-// ================================================================
-// FUNZIONE TOTALE: 19 parametri
-//   p[0]       = A            (ampiezza globale)
-//   p[1]       = f            (frazione segnale, fisso = 0 in fase 1)
-//   p[2]       = g            (frazione W vs Z,  fisso = 0 in fase 1)
+
+// TOT FUNCTION: 19 parameters
+//   p[0]       = A            (amplitude )
+//   p[1]       = f            (sig fraction, fisso = 0 in fase 1)
+//   p[2]       = g            (fraction W vs Z,  fisso = 0 in fase 1)
 //   p[3..8]    = W signal     (fgauss_W, mean_W, sigma1_W, sigma2_W, lambda_W, trans_W)
 //   p[9..14]   = Z signal     (fgauss_Z, mean_Z, sigma1_Z, sigma2_Z, lambda_Z, trans_Z)
 //   p[15..18]  = background   (p1, p2, p3, p4)
-// ================================================================
+
 Double_t total_func(Double_t *x, Double_t *p) {
     Double_t W_pars[6]   = {p[3],  p[4],  p[5],  p[6],  p[7],  p[8]};
     Double_t Z_pars[6]   = {p[9],  p[10], p[11], p[12], p[13], p[14]};
@@ -268,15 +265,14 @@ void fit1(
 
    
 
-    // ================================================================
-    // FUNZIONE DI FIT: 19 PARAMETRI
+    // FIT function: 19 parameters
     // p[0]       = A
     // p[1]       = f           (fisso = 0)
     // p[2]       = g           (fisso = 0)
-    // p[3..8]    = W signal    (fissi, dummy) -- Crystal Ball
+    // p[3..8]    = W signal    (fissi, dummy)
     // p[9..14]   = Z signal    (fissi, dummy)
-    // p[15..18]  = bkg pol4    (p1, p2, p3, p4) -- DA FITTARE
-    // ================================================================
+    // p[15..18]  = bkg pol4    (p1, p2, p3, p4) -- to fit
+
     TF1* fit_phase1 = new TF1("fit_phase1", total_func, fit_min, fit_max, 19);
 
     fit_phase1->SetParName(0,  "A");
@@ -299,23 +295,23 @@ void fit1(
     fit_phase1->SetParName(17, "p3_bkg");
     fit_phase1->SetParName(18, "p4_bkg");
 
-    // Ampiezza globale
+    // Amplitude
     fit_phase1->SetParameter(0, cfg.A_init);
     fit_phase1->SetParLimits(0, cfg.A_min, cfg.A_max);
 
-    // f=0 e g=0: solo background in fase 1
+    // f=0 e g=0: only bkg in phase 1
     fit_phase1->FixParameter(1, 0.0);
     fit_phase1->FixParameter(2, 0.0);
 
-    // Parametri W dummy (Crystal Ball, fissi)
+    // W dummy (fixed)
     fit_phase1->FixParameter(3,  0.5);
     fit_phase1->FixParameter(4,  80.0);
     fit_phase1->FixParameter(5,  2.0);
     fit_phase1->FixParameter(6,  5.0);
-    fit_phase1->FixParameter(7,  0.4);   // lambda_W dummy
-    fit_phase1->FixParameter(8,  74.0);  // trans_W  dummy
+    fit_phase1->FixParameter(7,  0.4);   
+    fit_phase1->FixParameter(8,  74.0); 
 
-    // Parametri Z dummy (fissi)
+    //  Z dummy (fixed)
     fit_phase1->FixParameter(9,  0.5);
     fit_phase1->FixParameter(10, 91.0);
     fit_phase1->FixParameter(11, 2.0);
@@ -323,7 +319,7 @@ void fit1(
     fit_phase1->FixParameter(13, 0.4);
     fit_phase1->FixParameter(14, 85.0);
 
-    // Coefficienti polinomio di background (DA FITTARE)
+    // coeff bkg pol (to fit)
     fit_phase1->SetParameter(15, cfg.p1_bkg_init);
     fit_phase1->SetParameter(16, cfg.p2_bkg_init);
     fit_phase1->SetParameter(17, cfg.p3_bkg_init);
@@ -435,11 +431,10 @@ void fit1(
     c->SaveAs(Form("%s/phase1_background_fit.pdf", out_dir.Data()));
     cout << "Plot saved: " << out_dir << "/phase1_background_fit.pdf" << endl;
 
-    // ================================================================
-    // SALVATAGGIO RISULTATI
-    // Mappa bin -> parametro (invariata, le fasi successive leggono bin 1-4):
+    //Saving results
+    // Bin Map -> parameter (not varying, next phases read bin 1-4):
     // bin1=p1_bkg, bin2=p2_bkg, bin3=p3_bkg, bin4=p4_bkg, bin5=A, bin6=f_signal(0)
-    // ================================================================
+
     TFile* output = new TFile(Form("%s/phase1_results.root", out_dir.Data()), "RECREATE");
     hist_bkg->Write("hist_bkg");
     fit_phase1->Write("fit_phase1");
