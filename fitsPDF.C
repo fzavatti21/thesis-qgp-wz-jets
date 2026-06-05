@@ -210,7 +210,7 @@ Double_t bkg_p4[4]        = {9.0035e-09,   4.46927e-08,  1.68456e-08,  0.0};
              h->Fit(f_fit, "LQN");
 
             // final fit for this toy
-            TFitResultPtr fitResult = h->Fit(f_fit, "SLWQN"); 
+            TFitResultPtr fitResult = h->Fit(f_fit, "SLQN"); 
             if (fitResult->Status() != 0) {
                 h->Fit(f_fit, "SLEQN");
             }
