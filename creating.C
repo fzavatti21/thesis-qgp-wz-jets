@@ -27,7 +27,7 @@
 
 using namespace std;
 
-void clearcreating(
+void creating(
     // NOTE: change this path to match your output directory
     TString fileList = "/eos/home-f/fzavatti/eventi6_R0.2_bkgCONsub400pclesSOFTz02_unq/cucu.txt",
     TString output_name = "/eos/home-f/fzavatti/eventi6_R0.2_bkgCONsub400pclesSOFTz02_unq/WZ_histograms4bins.root"
