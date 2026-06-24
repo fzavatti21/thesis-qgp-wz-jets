@@ -207,7 +207,6 @@ int main(int argc, char* argv[])
     tEvent->Branch("n2Fat",          &n2Fat,             "n2Fat/F");
     tEvent->Branch("n3Fat",          &n3Fat,             "n3Fat/F");
     tEvent->Branch("n2Fat_pure",     &n2Fat_pure,        "n2Fat_pure/F");
-    tEvent->Branch("n2Fat_cut",      &n2Fat_cut,         "n2Fat_cut/F");  
     tEvent->Branch("ptZ",            &ev_ptZ,            "ptZ/F");
     tEvent->Branch("etaZ",           &ev_etaZ,           "etaZ/F");
     tEvent->Branch("phiZ",           &ev_phiZ,           "phiZ/F");
@@ -598,8 +597,7 @@ std::vector<fastjet::PseudoJet> probeJets = sorted_by_pt(cs_probe.inclusive_jets
             ev_hasHFFatJet=0; ev_WMatchedFatJet=0; ev_ZMatchedFatJet=0;
              ev_WMatchedprobe=0; ev_ZMatchedprobe=0;
 
-            c2Fat=-1; d2Fat=-1; n2Fat=-1; n3Fat=-1; hofatjet=0,hoprobe=0;
-            n2Fat_cut=-1;  // inizializza a -1
+            c2Fat=-1; d2Fat=-1; n2Fat=-1; n3Fat=-1; hofatjet=0,hoprobe=0;  // inizializza a -1
      probe = probeJets[0];
 
             if(probeJets.size() > 0 && TMath::Abs(probeJets[0].eta()) <= etamax_Fat && probeJets[0].perp() >= 150.){
@@ -702,13 +700,12 @@ std::vector<fastjet::PseudoJet> probeJets = sorted_by_pt(cs_probe.inclusive_jets
     pythia.stat();
 
     // Output path on CERN EOS. Adapt to local directory if running outside CERN.
-    TString outDir =Form("/eos/home-f/fzavatti/eventi%d_R%.1f_OOquenchdelayed",massflag,jetR);
+    TString outDir =Form("/eos/home-f/fzavatti/eventi%d_R%.1f_OOquenchdelayedPROVA",massflag,jetR);
     gSystem->mkdir(outDir,kTRUE);
     TString outPath=Form("%s/Output_single_num%d_jetR%.2f_proc%d_gs%d_withUE.root",outDir.Data(),cislo,jetR,massflag,ns);
 
     TFile *outFile=TFile::Open(outPath,"RECREATE");
     tEvent->Write();
-    tJet->Write();
     hDeltaPt->Write();
     hT_pT->Write();
     hT_eta->Write();
