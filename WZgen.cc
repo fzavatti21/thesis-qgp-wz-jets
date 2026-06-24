@@ -700,7 +700,7 @@ std::vector<fastjet::PseudoJet> probeJets = sorted_by_pt(cs_probe.inclusive_jets
     pythia.stat();
 
     // Output path on CERN EOS. Adapt to local directory if running outside CERN.
-    TString outDir =Form("/eos/home-f/fzavatti/eventi%d_R%.1f_OOquenchdelayedPROVA",massflag,jetR);
+    TString outDir =Form("/eos/home-f/fzavatti/eventi%d_R%.1f_OOquenchdelayed",massflag,jetR);
     gSystem->mkdir(outDir,kTRUE);
     TString outPath=Form("%s/Output_single_num%d_jetR%.2f_proc%d_gs%d_withUE.root",outDir.Data(),cislo,jetR,massflag,ns);
 
