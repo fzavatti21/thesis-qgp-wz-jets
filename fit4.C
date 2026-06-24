@@ -34,7 +34,7 @@
 using namespace std;
 
 // NOTE: change EOS_BASE to match your output directory
-#define EOS_BASE "/eos/home-f/fzavatti/eventi6_R0.2_bkgCONsub400pclesSOFTz02_unq"
+#define EOS_BASE "/eos/home-f/fzavatti/eventi6_R0.2_bkgCONsub400pclesSOFTz02_tot"
 
 struct FitConfig_Phase4 {
     Double_t A_init;
