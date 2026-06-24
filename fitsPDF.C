@@ -161,7 +161,7 @@ Double_t bkg_p4[4]        = {9.0035e-09,   4.46927e-08,  1.68456e-08,  0.0};
             for (Int_t i = 0; i < nEventsFluctuated; i++) {
                 h->Fill(f_gen->GetRandom());
             }
-            h->Rebin(3);
+            h->Rebin(2);
 
             // Setup fit function
             TF1 *f_fit = new TF1("f_fit_toy", total_func, 65, 100, 19);
