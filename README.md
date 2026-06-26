@@ -18,7 +18,7 @@ The code is organised as follows:
 - `fit3.C`, Phase 3 fit: fits the Z mass peak with a Crystal Ball function (background fixed from Phase 1).
 - `fit4.C`, Phase 4 fit: full W+Z+background fit with all shape parameters fixed from Phases 1-3. Extracts the reconstructed mass peaks as a function of pT bin.
 - `fitsPDF.C`, Toy MC study: generates pseudo-experiments from the fitted function and refits them to estimate the statistical uncertainty on the mass peaks.
-`plot.C`: macro that plots the main branch distributions and computes event statistics for three quenching scenarios.
+- `plot.C`: macro that plots the main branch distributions and computes event statistics for three quenching scenarios.
 - `myLib.cc` / `myLib.h`, Custom plotting and utility library used for generating final physics plots.
 
 ---
