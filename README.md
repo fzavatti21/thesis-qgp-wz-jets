@@ -64,7 +64,7 @@ g++ -shared -fPIC $(root-config --cflags --libs) myLib.cc -o libMyLib.so
 
 Set the three input file list paths (`fl_quenched`, `fl_unquenched`, `fl_total`) and the output directory (`outDir`) at the top of the `clearplot()` function, then run:
 ```bash
-root -l clearplot.C
+root -l plot.C
 ```
 
 ### creating.C
