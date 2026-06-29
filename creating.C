@@ -1,5 +1,5 @@
 // creating4binsgroomed.C
-// Reads pygen.cc output ROOT files from a text list and fills
+// Reads WZgen.cc output ROOT files from a text list and fills
 // 2D histograms of SoftDrop groomed mass vs N2 energy correlator,
 // split by pT bin and by event type (W-matched, Z-matched, QCD background).
 // The 2D histograms are then projected onto the mass axis with a N2 < 0.18
@@ -8,7 +8,7 @@
 // Usage:
 //   Edit the default arguments (fileList and output_name) to point
 //   to your directory, then run:
-//   root creating4binsgroomed.C
+//   root creating.C
 //
 // Input:  text file listing one ROOT file path per line (from pygen.cc)
 // Output: ROOT file with all 2D and 1D histograms
