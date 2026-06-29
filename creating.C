@@ -3,17 +3,21 @@
 // 2D histograms of SoftDrop groomed mass vs N2 energy correlator,
 // split by pT bin and by event type (W-matched, Z-matched, QCD background).
 // The 2D histograms are then projected onto the mass axis with a N2 < 0.18
-// cut and passed as input to the four-phase fit (fit4binsfase1-4B.C).
-//
+// cut and passed as input to the four-phase fit (fit1.C -> fit4.C).
+
+// NOTE: this version uses mFat_groomed (SoftDrop groomed mass) as the
+// mass variable and mFat_n2 (N2 on the embedded jet) as the substructure variable.
+// Other options used in the analysis:
+//   - ungroomed mass: replace "mFat_groomed" with "mFat" in branch address and fills
+//   - pure jet mass (no background): replace "mFat_groomed" with "mFat_pure" and
+//     "n2Fat" with "n2Fat_pure" in branch address and fills
+// The corresponding branch names in the TTree are "mFat", "mFat_pure", "n2Fat_pure".
+
 // Usage:
 //   Edit the default arguments (fileList and output_name) to point
 //   to your directory, then run:
-//   root creating.C
-//
-// Input:  text file listing one ROOT file path per line (from pygen.cc)
-// Output: ROOT file with all 2D and 1D histograms
-//
-// NOTE: also update the mkdir path below to match your directory.
+//   root -l creating.C
+
 #include <TFile.h>
 #include <TTree.h>
 #include <TH1D.h>
